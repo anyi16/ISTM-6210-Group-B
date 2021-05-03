@@ -1,0 +1,43 @@
+import Vue from 'vue';
+//
+import VueRouter from 'vue-router'
+Vue.use(VueRouter);
+//
+import Index from '@/views/index'
+import Home from '@/views/home'
+import Login from '@/views/login'
+import NotFound from '@/views/404'
+#foreach($tableName in $backMenuTables)
+    import ${tableName} from '@/views/modules/${tableName}/list'
+#end
+
+//
+const routes = [
+    {
+        path: '/index', name:'index', component: Index, children: [{
+            // 
+            path: '/',
+            name: 'home',
+            component: Home
+        }
+        #foreach($tableName in $backMenuTables)
+            ,{
+                path: '/${tableName}',
+                name: '${tableName}',
+                component: ${tableName}
+            } 
+        #end
+        ]
+    },
+    { path: '/login', name:'login', component: Login },
+    { path: '/', redirect: '/index/' },      
+    { path: '*', component: NotFound }
+]
+//
+const router = new VueRouter({
+    mode: 'hash',   
+    routes // 
+})
+
+export default router;
+

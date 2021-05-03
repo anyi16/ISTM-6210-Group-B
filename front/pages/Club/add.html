@@ -1,0 +1,426 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title></title>
+		
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../../layui/css/layui.css">
+		
+		<link rel="stylesheet" href="../../css/style.css" />
+		
+		<link rel="stylesheet" href="../../css/theme.css" />
+		
+		<link rel="stylesheet" href="../../css/common.css" />
+	</head>
+	<style>
+		html::after {
+			position: fixed;
+			top: 0;
+			right: 0;
+			left: 0;
+			bottom: 0;
+			content: '';
+			display: block;
+			background-attachment: fixed;
+			background-size: cover;
+			background-position: center;
+						z-index: -1;
+		}
+		#swiper {
+			overflow: hidden;
+			margin: 0 auto;
+		}
+		#swiper .layui-carousel-ind li {
+			width: 50px;
+			height: 1px;
+			border-width: 0;
+			border-style: solid;
+			border-color: rgba(1, 1, 1, 0.3);
+			border-radius: 30px;
+			background-color: rgba(255, 0, 0, 1);
+			box-shadow: 0 0 0px rgba(255,0,0,.8);
+		}
+		#swiper .layui-carousel-ind li.layui-this {
+			width: 50px;
+			height: 10px;
+			border-width: 0;
+			border-style: solid;
+			border-color: rgba(0, 0, 0, 0.3);
+			border-radius: 50px;
+			background-color: rgba(0, 112, 126, 1);
+			box-shadow: 0 0 0px rgba(15,98,108);
+		}
+		
+		button, button:focus {
+			outline: none;
+		}
+		
+		.data-add-container .add .layui-select-title .layui-unselect {
+			padding: 0 12px;
+			height: 40px;
+			font-size: 14px;
+			color: #333;
+			border-radius: 4px;
+			border-width: 1px;
+			border-style: solid;
+			border-color: #DCDFE6;
+			background-color: #fff;
+			box-shadow: 0 0 0px rgba(255,0,0,.8);
+			text-align: left;
+		}
+		.data-add-container .add .layui-form-item {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.data-add-container .layui-form-pane .layui-form-item[pane] .layui-form-label {
+			margin: 0;
+			position: inherit;
+			background: transparent;
+			border: 0;
+		}
+		.data-add-container .add .layui-input-block {
+			margin: 0;
+			flex: 1;
+		}
+		.data-add-container .layui-form-pane .layui-form-item[pane] .layui-input-inline {
+			margin: 0;
+			flex: 1;
+			display: flex;
+		}
+	</style>
+	<body style="background: #EEEEEE; ">
+
+
+		<div id="app">
+
+			<!--
+			<div class="layui-carousel" id="swiper">
+				<div carousel-item id="swiper-item">
+					<div v-for="(item,index) in swiperList" v-bind:key="index">
+						<img class="swiper-item" :src="item.img">
+					</div>
+				</div>
+			</div> -->
+			<div class="layui-carousel" id="swiper" :style='{"boxShadow":"0 0 6px rgba(15,98,108)","margin":"0 auto","borderColor":"rgba(0,0,0,.3)","borderRadius":"0px","borderWidth":"0","width":"100%","borderStyle":"solid"}'>
+			  <div carousel-item id="swiper-item">
+				<div v-for="(item,index) in swiperList" :key="index">
+					<img style="width: 100%;height: 100%;object-fit:cover;" :src="item.img" />
+				</div>
+			  </div>
+			</div>
+			
+
+			<div class="data-add-container" :style='{"padding":"20px","boxShadow":"0px 0px 0px rgba(0, 112, 126, 1)","margin":"30px auto","borderColor":"rgba(38, 155, 158, 1)","backgroundColor":"#fff","borderRadius":"10px","borderWidth":"0","borderStyle":"solid"}'>
+
+				<form class="layui-form layui-form-pane add" lay-filter="myForm">
+					
+                        <div  :style='{"padding":"10px","boxShadow":"0 0 5px rgba(0, 112, 126, 1)","margin":"0 0 10px 0","borderColor":"rgba(38, 155, 158, 1)","backgroundColor":"#fff","borderRadius":"4px","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="layui-form-item" pane>
+						<label  :style='{"width":"94px","padding":"0 12px 0 0","fontSize":"14px","color":"#333","textAlign":"left"}' class="layui-form-label">Club Account:</label>
+						<div class="layui-input-block">
+						<input :style='{"padding":"0 12px","boxShadow":"0 0 0px rgba(255,0,0,.8)","borderColor":"#DCDFE6","backgroundColor":"#fff","color":"#333","borderRadius":"4px","textAlign":"left","borderWidth":"1px","fontSize":"14px","borderStyle":"solid","height":"40px"}' v-model="detail.clubaccount" type="text" :readonly="ro.clubaccount" name="clubaccount" id="clubaccount" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+                        <div  :style='{"padding":"10px","boxShadow":"0 0 5px rgba(0, 112, 126, 1)","margin":"0 0 10px 0","borderColor":"rgba(38, 155, 158, 1)","backgroundColor":"#fff","borderRadius":"4px","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="layui-form-item" pane>
+						<label  :style='{"width":"94px","padding":"0 12px 0 0","fontSize":"14px","color":"#333","textAlign":"left"}' class="layui-form-label">Password</label>
+						<div class="layui-input-block">
+						<input :style='{"padding":"0 12px","boxShadow":"0 0 0px rgba(255,0,0,.8)","borderColor":"#DCDFE6","backgroundColor":"#fff","color":"#333","borderRadius":"4px","textAlign":"left","borderWidth":"1px","fontSize":"14px","borderStyle":"solid","height":"40px"}' v-model="detail.password" type="text" :readonly="ro.password" name="password" id="password" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+                        <div :style='{"padding":"10px","boxShadow":"0 0 5px rgba(0, 112, 126, 1)","margin":"0 0 10px 0","borderColor":"rgba(38, 155, 158, 1)","backgroundColor":"#fff","borderRadius":"4px","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="layui-form-item" pane>
+						<label :style='{"width":"94px","padding":"0 12px 0 0","fontSize":"14px","color":"#333","textAlign":"left"}' class="layui-form-label">Image:</label>
+						<div class="layui-input-block">
+						<div v-if="detail.image" style="display:inline-block;margin-right:10px;">
+								<img id="imageImg" style="width: 100px;height: 100px;border-radius: 50%;border: 2px solid #EEEEEE;" :src="detail.image">
+								<input type="hidden" :value="detail.image" id="image" name="image" />
+						</div>
+						<button v-if="!ro.image" :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(255,0,0,.5)","margin":"0 10px 0 0","borderColor":"#ccc","backgroundColor":"red","color":"#fff","borderRadius":"8px","borderWidth":"0","width":"auto","fontSize":"14px","borderStyle":"solid","height":"44px"}' type="button" class="layui-btn btn-theme" id="imageUpload">
+						<i v-if="true" :style='{"color":"#fff","show":true,"fontSize":"14px"}' class="layui-icon">&#xe67c;</i>Upload
+						</button>
+						</div>
+					</div>
+                        <div  :style='{"padding":"10px","boxShadow":"0 0 5px rgba(0, 112, 126, 1)","margin":"0 0 10px 0","borderColor":"rgba(38, 155, 158, 1)","backgroundColor":"#fff","borderRadius":"4px","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="layui-form-item" pane>
+						<label  :style='{"width":"94px","padding":"0 12px 0 0","fontSize":"14px","color":"#333","textAlign":"left"}' class="layui-form-label">Club:</label>
+						<div class="layui-input-block">
+						<input :style='{"padding":"0 12px","boxShadow":"0 0 0px rgba(255,0,0,.8)","borderColor":"#DCDFE6","backgroundColor":"#fff","color":"#333","borderRadius":"4px","textAlign":"left","borderWidth":"1px","fontSize":"14px","borderStyle":"solid","height":"40px"}' v-model="detail.clubname" type="text" :readonly="ro.clubname" name="clubname" id="clubname" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+                        <div  :style='{"padding":"10px","boxShadow":"0 0 5px rgba(0, 112, 126, 1)","margin":"0 0 10px 0","borderColor":"rgba(38, 155, 158, 1)","backgroundColor":"#fff","borderRadius":"4px","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="layui-form-item" pane>
+						<label  :style='{"width":"94px","padding":"0 12px 0 0","fontSize":"14px","color":"#333","textAlign":"left"}' class="layui-form-label">Type:</label>
+						<div class="layui-input-block">
+						<input :style='{"padding":"0 12px","boxShadow":"0 0 0px rgba(255,0,0,.8)","borderColor":"#DCDFE6","backgroundColor":"#fff","color":"#333","borderRadius":"4px","textAlign":"left","borderWidth":"1px","fontSize":"14px","borderStyle":"solid","height":"40px"}' v-model="detail.clubtype" type="text" :readonly="ro.clubtype" name="clubtype" id="clubtype" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+                        <div  :style='{"padding":"10px","boxShadow":"0 0 5px rgba(0, 112, 126, 1)","margin":"0 0 10px 0","borderColor":"rgba(38, 155, 158, 1)","backgroundColor":"#fff","borderRadius":"4px","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="layui-form-item" pane>
+						<label  :style='{"width":"94px","padding":"0 12px 0 0","fontSize":"14px","color":"#333","textAlign":"left"}' class="layui-form-label">Contacts</label>
+						<div class="layui-input-block">
+						<input :style='{"padding":"0 12px","boxShadow":"0 0 0px rgba(255,0,0,.8)","borderColor":"#DCDFE6","backgroundColor":"#fff","color":"#333","borderRadius":"4px","textAlign":"left","borderWidth":"1px","fontSize":"14px","borderStyle":"solid","height":"40px"}' v-model="detail.contacts" type="text" :readonly="ro.contacts" name="contacts" id="contacts" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+                        <div  :style='{"padding":"10px","boxShadow":"0 0 5px rgba(0, 112, 126, 1)","margin":"0 0 10px 0","borderColor":"rgba(38, 155, 158, 1)","backgroundColor":"#fff","borderRadius":"4px","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="layui-form-item" pane>
+						<label  :style='{"width":"94px","padding":"0 12px 0 0","fontSize":"14px","color":"#333","textAlign":"left"}' class="layui-form-label">Phone:</label>
+						<div class="layui-input-block">
+						<input :style='{"padding":"0 12px","boxShadow":"0 0 0px rgba(255,0,0,.8)","borderColor":"#DCDFE6","backgroundColor":"#fff","color":"#333","borderRadius":"4px","textAlign":"left","borderWidth":"1px","fontSize":"14px","borderStyle":"solid","height":"40px"}' v-model="detail.phone" type="text" :readonly="ro.phone" name="phone" id="phone" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+                                                            
+                                                                                                                                                                                                                                                                                                            
+					<div  :style='{"padding":"10px","boxShadow":"0 0 5px rgba(0, 112, 126, 1)","margin":"0 0 10px 0","borderColor":"rgba(38, 155, 158, 1)","backgroundColor":"#fff","borderRadius":"4px","borderWidth":"0 0 1px 0","borderStyle":"solid"}' class="layui-form-item">
+					<div class="layui-input-block" style="text-align: right;">
+						<button :style='{"padding":"0 10px","boxShadow":"0 0 0px rgba(255,0,0,.5)","margin":"0 10px","borderColor":"#ccc","backgroundColor":"rgba(38, 155, 158, 1)","color":"#fff","borderRadius":"8px","borderWidth":"0","width":"25%","fontSize":"14px","borderStyle":"solid","height":"44px"}' class="layui-btn btn-submit" lay-submit lay-filter="*">Submit</button>
+						<button :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(0, 112, 126, 1)","margin":"0 10px","borderColor":"#ccc","backgroundColor":"#fff","color":"rgba(0, 0, 0, 1)","borderRadius":"8px","borderWidth":"0","width":"25%","fontSize":"14px","borderStyle":"solid","height":"44px"}' type="reset" class="layui-btn layui-btn-primary">Reset</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<script src="../../layui/layui.js"></script>
+		<script src="../../js/vue.js"></script>
+		
+		<script src="../../js/config.js"></script>
+		
+		<script src="../../modules/config.js"></script>
+		
+		<script src="../../js/utils.js"></script>
+		
+		<script src="../../js/validate.js"></script>
+		
+		<script type="text/javascript" src="../../js/jquery.js"></script>
+		<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=ca04cee7ac952691aa67a131e6f0cee0"></script>
+		<script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../../js/bootstrap.AMapPositionPicker.js"></script>
+
+		<script>
+			var jquery = $;
+			
+			var vue = new Vue({
+				el: '#app',
+				data: {
+					
+					swiperList: [{
+						img: '../../img/banner.jpg'
+					}],
+					dataList: [],
+      					ro:{
+				        clubaccount : false,
+				        password : false,
+				        image : false,
+				        clubname : false,
+				        clubtype : false,
+				        contacts : false,
+				        phone : false,
+              				},
+                    detail: {
+                                clubaccount: '',
+                                password: '',
+                                image: '',
+                                clubname: '',
+                                clubtype: '',
+                                contacts: '',
+                                phone: '',
+                                                                    },                 centerMenu: centerMenu
+				},
+				updated: function() {
+					layui.form.render('select', 'myForm');
+				},
+                computed: {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        },
+				methods: {
+					jump(url) {
+						jump(url)
+					}
+				}
+			})
+
+			
+			layui.use(['layer', 'element', 'carousel', 'http', 'jquery', 'form', 'upload', 'laydate','tinymce'], function() {
+				var layer = layui.layer;
+				var element = layui.element;
+				var carousel = layui.carousel;
+				var http = layui.http;
+				var jquery = layui.jquery;
+				var form = layui.form;
+				var upload = layui.upload;
+				var laydate = layui.laydate;
+                var tinymce = layui.tinymce
+
+				
+				http.request('config/list', 'get', {
+					page: 1,
+					limit: 5
+				}, function(res) {
+					if (res.data.list.length > 0) {
+						var swiperItemHtml = '';
+						for (let item of res.data.list) {
+							if (item.name.indexOf('picture') >= 0 && item.value && item.value != "" && item.value != null) {
+								swiperItemHtml +=
+									'<div>' +
+									'<img style="width: 100%;height: 100%;object-fit:cover;" class="swiper-item" src="' + item.value + '">' +
+									'</div>';
+							}
+						}
+						jquery('#swiper-item').html(swiperItemHtml);
+						
+						vue.$nextTick(() => {
+						  carousel.render({
+						  	elem: '#swiper',
+							width: '100%',
+						  	height: '400px',
+						  	arrow: 'hover',
+						  	anim: 'fade',
+						  	autoplay: 'true',
+						  	interval: '3000',
+						  	indicator: 'inside'
+						  });
+						
+						})
+						
+					}
+				});
+
+                																								
+				var imageUpload = upload.render({
+					
+					elem: '#imageUpload',
+					
+					url: http.baseurl + 'file/upload',
+					
+					headers: {
+						Token: localStorage.getItem('Token')
+					},
+					
+					accept: 'images',
+					before: function() {
+						
+						var index = layer.load(1, {
+							shade: [0.1, '#fff'] 
+						});
+					},
+					
+					done: function(res) {
+						console.log(res);
+						layer.closeAll();
+						if (res.code == 0) {
+							layer.msg("Upload succeeded", {
+								time: 2000,
+								icon: 6
+							})
+							var url = http.baseurl + 'upload/' + res.file;
+							jquery('#image').val(url);
+							jquery('#imageImg').attr('src', url)
+                            vue.detail.image = url;
+						} else {
+							layer.msg(res.msg, {
+								time: 2000,
+								icon: 5
+							})
+						}
+					},
+					
+					error: function() {
+						layer.closeAll();
+						layer.msg("Request interface exception", {
+							time: 2000,
+							icon: 5
+						})
+					}
+				});
+																																												
+                
+				let table = localStorage.getItem("userTable");
+				http.request(`${table}/session`, 'get', {}, function(data) {
+					
+					
+					data = data.data
+					for (var key in data){
+                                        }
+				});
+
+                
+                if(http.getParam('corss')){
+					var obj = JSON.parse(localStorage.getItem('crossObj'));
+					for (var o in obj){
+					if(o=='clubaccount'){
+          	                                vue.detail[o] = obj[o];
+						vue.ro.clubaccount = true;
+						continue;
+                                        }
+					if(o=='password'){
+          	                                vue.detail[o] = obj[o];
+						vue.ro.password = true;
+						continue;
+                                        }
+					if(o=='image'){
+          	                                vue.detail[o] = obj[o];
+						vue.ro.image = true;
+						continue;
+                                        }
+					if(o=='clubname'){
+          	                                vue.detail[o] = obj[o];
+						vue.ro.clubname = true;
+						continue;
+                                        }
+					if(o=='clubtype'){
+          	                                vue.detail[o] = obj[o];
+						vue.ro.clubtype = true;
+						continue;
+                                        }
+					if(o=='contacts'){
+          	                                vue.detail[o] = obj[o];
+						vue.ro.contacts = true;
+						continue;
+                                        }
+					if(o=='phone'){
+          	                                vue.detail[o] = obj[o];
+						vue.ro.phone = true;
+						continue;
+                                        }
+                                        }
+				}
+				
+
+				
+				form.on('submit(*)', function(data) {
+					data = data.field;
+					
+                    
+                    if(!data.clubaccount){
+                        layer.msg('Club account cannot be empty', {
+							time: 2000,
+							icon: 5
+						});
+                        return false
+                    }                                                                                                 if(!data.password){
+                        layer.msg('Password cannot be empty', {
+							time: 2000,
+							icon: 5
+						});
+                        return false
+                    }                                                                                                                                                                                                                                                                                                 if(!data.clubname){
+                        layer.msg('Club name cannot be empty', {
+							time: 2000,
+							icon: 5
+						});
+                        return false
+                    }
+
+					http.requestJson('Club' + '/add', 'post', data, function(res) {
+					 	layer.msg('Submitted successfully', {
+					 		time: 2000,
+					 		icon: 6
+					 	}, function() {
+					 		back();
+						});
+					 });
+
+					return false
+				});
+
+			});
+		</script>
+	</body>
+</html>

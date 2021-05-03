@@ -1,0 +1,503 @@
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>User Center</title>
+		<link rel="stylesheet" href="../../layui/css/layui.css">
+		
+		<link rel="stylesheet" href="../../css/style.css" />
+		
+		<link rel="stylesheet" href="../../css/theme.css" />
+		
+		<link rel="stylesheet" href="../../css/common.css" />
+	</head>
+	<style>
+		html::after {
+			position: fixed;
+			top: 0;
+			right: 0;
+			left: 0;
+			bottom: 0;
+			content: '';
+			display: block;
+			background-attachment: fixed;
+			background-size: cover;
+			background-position: center;
+						z-index: -1;
+		}
+		#swiper {
+			overflow: hidden;
+		}
+		#swiper .layui-carousel-ind li {
+			width: 50px;
+			height: 1px;
+			border-width: 0;
+			border-style: solid;
+			border-color: rgba(1, 1, 1, 0.3);
+			border-radius: 30px;
+			background-color: rgba(255, 0, 0, 1);
+			box-shadow: 0 0 0px rgba(255,0,0,.8);
+		}
+		#swiper .layui-carousel-ind li.layui-this {
+			width: 50px;
+			height: 10px;
+			border-width: 0;
+			border-style: solid;
+			border-color: rgba(0, 0, 0, 0.3);
+			border-radius: 50px;
+			background-color: rgba(0, 112, 126, 1);
+			box-shadow: 0 0 0px rgba(15,98,108);
+		}
+
+		.index-title {
+			text-align: center;
+			box-sizing: border-box;
+			width: 980px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+		}
+		.index-title span {
+			padding: 0 10px;
+			line-height: 1.4;
+		}
+		.center-container .layui-nav-tree {
+			width: 100%;
+		}
+		.center-container .layui-nav {
+			position: inherit;
+		}
+		.center-container .layui-nav-tree .layui-nav-item {
+			height: 44px;
+			line-height: 44px;
+			font-size: 14px;
+			color: rgba(0, 112, 126, 1);
+			border-width: 0;
+			border-style: solid;
+			border-color: rgba(38, 155, 158, 1);
+			border-radius: 0;
+			background-color: #fff;
+			box-shadow: 0 0 6px rgba(0, 112, 126, 1);
+			text-align: center;
+		}
+		.center-container .layui-nav-tree .layui-nav-bar {
+			height: 44px !important;
+			opacity: 0 !important;
+		}
+		.center-container .layui-nav-tree .layui-nav-item.layui-this {
+			font-size: 14px;
+			color: #fff;
+			border-width: 1px;
+			border-style: solid;
+			border-color: rgba(38, 155, 158, 1);
+			border-radius: 0px;
+			background-color: rgba(38, 155, 158, 1);
+			box-shadow: 0 0 0px rgba(0, 112, 126, 1);
+		}
+		.center-container .layui-nav-tree .layui-nav-item:hover {
+			font-size: 14px;
+			color: #fff;
+			border-width: 0;
+			border-style: solid;
+			border-color: rgba(255,0,0,.3);
+			border-radius: 0;
+			background-color: rgba(38, 155, 158, 1);
+			box-shadow: 0 0 6px rgba(255,0,0,0);
+		}
+		.center-container .layui-nav-tree .layui-nav-item a {
+			line-height: inherit;
+			height: auto;
+			background-color: inherit;
+			color: inherit;
+			text-decoration: none;
+		}
+		.right-container {
+			position: relative;
+		}
+
+		.right-container .layui-form-item {
+			display: flex;
+			align-items: center;
+		}
+		.right-container .layui-input-block {
+			margin: 0;
+			flex: 1;
+		}
+		.right-container .input .layui-input {
+			padding: 0 12px;
+			height: 40px;
+			font-size: 14px;
+			color: #333;
+			border-radius: 4px;
+			border-width: 1px;
+			border-style: solid;
+			border-color: rgba(0, 112, 126, 1);
+			background-color: #fff;
+			box-shadow: 0 0 6px rgba(0, 112, 126, 1);
+			text-align: left;
+		}
+		.right-container .select .layui-input {
+			padding: 0 12px;
+			height: 40px;
+			font-size: 14px;
+			color: #333;
+			border-radius: 4px;
+			border-width: 1px;
+			border-style: solid;
+			border-color: rgba(0, 112, 126, 1);
+			background-color: #fff;
+			box-shadow: 0 0 6px rgba(0, 112, 126, 1);
+			text-align: left;
+		}
+		.right-container .date .layui-input {
+			padding: 0 12px;
+			height: 40px;
+			font-size: 14px;
+			color: #333;
+			border-radius: 4px;
+			border-width: 1px;
+			border-style: solid;
+			border-color: rgba(0, 112, 126, 1);
+			background-color: #fff;
+			box-shadow: 0 0 6px rgba(0, 112, 126, 1);
+			text-align: left;
+		}
+	</style>
+	<body>
+
+		<div id="app">
+			<!--  -->
+			<!-- <div class="layui-carousel" id="swiper">
+				<div carousel-item id="swiper-item">
+					<div v-for="(item,index) in swiperList" v-bind:key="index">
+						<img class="swiper-item" :src="item.img">
+					</div>
+				</div>
+			</div> -->
+			<div class="layui-carousel" id="swiper" :style='{"boxShadow":"0 0 6px rgba(15,98,108)","margin":"0 auto","borderColor":"rgba(0,0,0,.3)","borderRadius":"0px","borderWidth":"0","width":"100%","borderStyle":"solid"}'>
+			  <div carousel-item>
+				<div v-for="(item,index) in swiperList" :key="index">
+					<img style="width: 100%;height: 100%;object-fit:cover;" :src="item.img" />
+				</div>
+			  </div>
+			</div>
+			<!--  -->
+
+			<!-- title -->
+			<!-- <h2 style="margin-top: 20px;" class="index-title">USER / CENTER</h2>
+			<div class="line-container">
+				<p class="line" style="background: #EEEEEE;"> User Center </p>
+			</div> -->
+			<div class="index-title" :style='{"padding":"10px","boxShadow":"10px 8px 6px rgba(0, 112, 126, 1)","margin":"10px auto","borderColor":"rgba(38, 155, 158, 1)","backgroundColor":"rgba(255, 255, 255, 1)","color":"rgba(0, 112, 126, 1)","borderRadius":"4px","borderWidth":"1px","fontSize":"20px","borderStyle":"solid","height":"auto"}'>
+			  <span>USER CENTER</span>
+			</div>
+			<!-- title -->
+
+			<div class="center-container">
+				
+				<div class="left-container" :style='{"padding":"0","boxShadow":"-1px 1px 6px rgba(0, 112, 126, 1)","margin":"0","borderColor":"rgba(38, 155, 158, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0 0 1px 0","width":"160px","borderStyle":"solid"}'>
+					<ul class="layui-nav layui-nav-tree">
+						<li v-for="(item,index) in centerMenu" v-bind:key="index" class="layui-nav-item" :class="index==0?'layui-this':''">
+							<a :href="'javascript:jump(\''+item.url+'\')'">{{item.name}}</a>
+						</li>
+					</ul>
+				</div>
+				
+				<div class="right-container" :style='{"padding":"20px","boxShadow":"0px 0px 0px rgba(0, 112, 126, 1)","margin":"0","borderColor":"rgba(0, 112, 126, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"0","borderStyle":"solid"}'>
+					<form class="layui-form" lay-filter="myForm">
+						
+						<input type="hidden" name="id" id="id" />
+						    <div class="layui-form-item"  :style='{"padding":"10px","boxShadow":"0 0 6px rgba(0, 112, 126, 1)","margin":"0 0 10px 0","borderColor":"rgba(0, 112, 126, 1)","backgroundColor":"#fff","borderRadius":"4px","borderWidth":"0 0 1px 0","borderStyle":"solid"}'>
+							<label  :style='{"width":"94px","padding":"0 12px 0 0","fontSize":"14px","color":"rgba(0, 112, 126, 1)","textAlign":"right"}' class="layui-form-label">User Name</label>
+							<div class="layui-input-block input">
+								<input type="text" name="ordinaryusername" id="ordinaryusername" placeholder="" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+                            <div class="layui-form-item"  :style='{"padding":"10px","boxShadow":"0 0 6px rgba(0, 112, 126, 1)","margin":"0 0 10px 0","borderColor":"rgba(0, 112, 126, 1)","backgroundColor":"#fff","borderRadius":"4px","borderWidth":"0 0 1px 0","borderStyle":"solid"}'>
+							<label  :style='{"width":"94px","padding":"0 12px 0 0","fontSize":"14px","color":"rgba(0, 112, 126, 1)","textAlign":"right"}' class="layui-form-label">Password</label>
+							<div class="layui-input-block input">
+								<input type="password" name="password" id="password" placeholder="" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+                            <div class="layui-form-item"  :style='{"padding":"10px","boxShadow":"0 0 6px rgba(0, 112, 126, 1)","margin":"0 0 10px 0","borderColor":"rgba(0, 112, 126, 1)","backgroundColor":"#fff","borderRadius":"4px","borderWidth":"0 0 1px 0","borderStyle":"solid"}'>
+							<label  :style='{"width":"94px","padding":"0 12px 0 0","fontSize":"14px","color":"rgba(0, 112, 126, 1)","textAlign":"right"}' class="layui-form-label">Name</label>
+							<div class="layui-input-block input">
+								<input type="text" name="name" id="name" placeholder="" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+                            <div class="layui-form-item"  :style='{"padding":"10px","boxShadow":"0 0 6px rgba(0, 112, 126, 1)","margin":"0 0 10px 0","borderColor":"rgba(0, 112, 126, 1)","backgroundColor":"#fff","borderRadius":"4px","borderWidth":"0 0 1px 0","borderStyle":"solid"}'>
+							<label  :style='{"width":"94px","padding":"0 12px 0 0","fontSize":"14px","color":"rgba(0, 112, 126, 1)","textAlign":"right"}' class="layui-form-label">Gender</label>
+							<div class="layui-input-block select">
+								<select name="gender" id="gender">
+									<option value="">Select</option>
+									<option v-for="(item,index) in gender" v-bind:key="index" :value="item">{{item}}</option>
+								</select>
+							</div>
+						</div>
+                            <div class="layui-form-item"  :style='{"padding":"10px","boxShadow":"0 0 6px rgba(0, 112, 126, 1)","margin":"0 0 10px 0","borderColor":"rgba(0, 112, 126, 1)","backgroundColor":"#fff","borderRadius":"4px","borderWidth":"0 0 1px 0","borderStyle":"solid"}'>
+							<label  :style='{"width":"94px","padding":"0 12px 0 0","fontSize":"14px","color":"rgba(0, 112, 126, 1)","textAlign":"right"}' style="opacity: 0;" class="layui-form-label">Profile Photo</label>
+							<div class="layui-input-block">
+								<img id="profilephotoImg" style="width: 100px;height: 100px;border-radius: 50%;border: 2px solid #EEEEEE;" :style='{"boxShadow":"0 0 6px rgba(0, 112, 126, 1)","borderColor":"rgba(0, 112, 126, 1)","backgroundColor":"#fff","borderRadius":"10px","borderWidth":"1px","width":"80px","borderStyle":"solid","height":"80px"}' src="../../img/avator.png">
+								<input type="hidden" id="profilephoto" name="profilephoto" />
+							</div>
+						</div>
+						<div class="layui-form-item"  :style='{"padding":"10px","boxShadow":"0 0 6px rgba(0, 112, 126, 1)","margin":"0 0 10px 0","borderColor":"rgba(0, 112, 126, 1)","backgroundColor":"#fff","borderRadius":"4px","borderWidth":"0 0 1px 0","borderStyle":"solid"}'>
+							<label  :style='{"width":"94px","padding":"0 12px 0 0","fontSize":"14px","color":"rgba(0, 112, 126, 1)","textAlign":"right"}' style="opacity: 0;" class="layui-form-label">Picture</label>
+							<div class="layui-input-block">
+								<button :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(255,0,0,.5)","margin":"0 10px 0 0","borderColor":"#ccc","backgroundColor":"red","color":"#fff","borderRadius":"8px","borderWidth":"0","width":"auto","fontSize":"14px","borderStyle":"solid","height":"44px"}' type="button" class="layui-btn btn-theme" id="profilephotoUpload">
+									<i v-if="true" :style='{"color":"#fff","show":true,"fontSize":"14px"}' class="layui-icon">&#xe67c;</i>Upload
+								</button>
+							</div>
+						</div>
+                            <div class="layui-form-item"  :style='{"padding":"10px","boxShadow":"0 0 6px rgba(0, 112, 126, 1)","margin":"0 0 10px 0","borderColor":"rgba(0, 112, 126, 1)","backgroundColor":"#fff","borderRadius":"4px","borderWidth":"0 0 1px 0","borderStyle":"solid"}'>
+							<label  :style='{"width":"94px","padding":"0 12px 0 0","fontSize":"14px","color":"rgba(0, 112, 126, 1)","textAlign":"right"}' class="layui-form-label">Email</label>
+							<div class="layui-input-block input">
+								<input type="text" name="email" id="email" placeholder="" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+                                                
+						<div class="layui-form-item">
+							<div class="layui-input-block" style="display: flex;flex-wrap:wrap;">
+								<button :style='{"padding":"0 10px","boxShadow":"0 0  0px rgba(0, 112, 126, 1)","margin":"10px auto 0","borderColor":"rgba(38, 155, 158, 1)","backgroundColor":"rgba(38, 155, 158, 1)","color":"#fff","borderRadius":"8px","borderWidth":"0","width":"60%","fontSize":"14px","borderStyle":"solid","height":"44px"}' class="layui-btn btn-submit btn-theme" lay-submit lay-filter="*">Update Information</button>
+                <button :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(0, 112, 126, 1)","margin":"10px auto","borderColor":"#ccc","backgroundColor":"#fff","color":"rgba(0, 0, 0, 1)","borderRadius":"8px","borderWidth":"0","width":"60%","fontSize":"14px","borderStyle":"solid","height":"44px"}' @click="logout" class="layui-btn btn-submit">Logout</button>
+							</div>
+						</div>
+						<!-- <div class="layui-form-item">
+							<div class="layui-input-block">
+								<button :style='{"padding":"0 10px","boxShadow":"0 0 6px rgba(0, 112, 126, 1)","margin":"10px auto","borderColor":"#ccc","backgroundColor":"#fff","color":"rgba(0, 0, 0, 1)","borderRadius":"8px","borderWidth":"0","width":"60%","fontSize":"14px","borderStyle":"solid","height":"44px"}' @click="logout" class="layui-btn btn-submit">logout</button>
+							</div>
+						</div> -->
+					</form>
+				</div>
+				
+			</div>
+
+		</div>
+
+		
+		<script src="../../layui/layui.js"></script>
+		
+		<script src="../../js/vue.js"></script>
+		
+		<script src="../../js/config.js"></script>
+		
+		<script src="../../modules/config.js"></script>
+		
+		<script src="../../js/utils.js"></script>
+		
+		<script src="../../js/validate.js"></script>
+
+		<script>
+			var vue = new Vue({
+				el: '#app',
+				data: {
+					// 
+					swiperList: [],																												gender: [],
+						centerMenu: centerMenu
+				},
+                updated: function() {
+					layui.form.render(null, 'myForm');
+				},
+				methods: {
+					jump(url) {
+						jump(url)
+					},
+					logout(){
+						localStorage.removeItem('Token');
+						localStorage.removeItem('role');
+						localStorage.removeItem('sessionTable');
+						localStorage.removeItem('adminName');
+						localStorage.removeItem('userid');
+						localStorage.removeItem('userTable');
+						window.parent.location.href = '../login/login.html';
+					}
+				}
+			})
+
+			layui.use(['layer', 'element', 'carousel', 'http', 'jquery', 'form', 'upload'], function() {
+				var layer = layui.layer;
+				var element = layui.element;
+				var carousel = layui.carousel;
+				var http = layui.http;
+				var jquery = layui.jquery;
+				var form = layui.form;
+				var upload = layui.upload;
+
+      // 
+      http.request('config/list', 'get', {
+        page: 1,
+        limit: 5
+      }, function(res) {
+        if (res.data.list.length > 0) {
+          let swiperList = [];
+          res.data.list.forEach(element => {
+            if (element.value != null) {
+              swiperList.push({
+                img: element.value
+              });
+            }
+          });
+                  vue.swiperList = swiperList;
+                  vue.$nextTick(() => {
+                    carousel.render({
+                        elem: '#test1',
+                                width: '100%',
+                        height: '400px',
+                        arrow: 'hover',
+                        anim: 'fade',
+                        autoplay: 'true',
+                        interval: '3000',
+                        indicator: 'inside'
+                    });
+                  })
+
+        }
+      });
+
+
+				// 
+				http.request('config/list', 'get', {
+					page: 1,
+					limit: 5
+				}, function(res) {
+					if (res.data.list.length > 0) {
+						var swiperItemHtml = '';
+						for (let item of res.data.list) {
+							if (item.name.indexOf('picture') >= 0 && item.value && item.value != "" && item.value != null) {
+								swiperItemHtml +=
+									'<div>' +
+									'<img style="width: 100%;height: 100%;object-fit:cover;" class="swiper-item" src="' + item.value + '">' +
+									'</div>';
+							}
+						}
+						jquery('#swiper-item').html(swiperItemHtml);
+						// 
+						vue.$nextTick(() => {
+						  carousel.render({
+						  	elem: '#swiper',
+							width: '100%',
+						  	height: '400px',
+						  	arrow: 'hover',
+						  	anim: 'fade',
+						  	autoplay: 'true',
+						  	interval: '3000',
+						  	indicator: 'inside'
+						  });
+
+						})
+
+					}
+				});               																																vue.gender = 'Male,Female'.split(',')
+																// 
+				var profilephotoUpload = upload.render({
+					//
+					elem: '#profilephotoUpload',
+					//
+					url: http.baseurl + 'file/upload',
+					// 
+					headers: {
+						Token: localStorage.getItem('Token')
+					},
+					// 
+					accept: 'images',
+					before: function() {
+						//
+						var index = layer.load(1, {
+							shade: [0.1, '#fff'] //
+						});
+					},
+					// 
+					done: function(res) {
+						console.log(res);
+						layer.closeAll();
+						if (res.code == 0) {
+							layer.msg("Upload succeeded", {
+								time: 2000,
+								icon: 6
+							})
+							var url = http.baseurl + 'upload/' + res.file;
+							jquery('#profilephoto').val(url);
+							jquery('#profilephotoImg').attr('src', url)
+						} else {
+							layer.msg(res.msg, {
+								time: 2000,
+								icon: 5
+							})
+						}
+					},
+					//
+					error: function() {
+						layer.closeAll();
+						layer.msg("Request interface exception", {
+							time: 2000,
+							icon: 5
+						})
+					}
+				});
+																
+				// 
+				let table = localStorage.getItem("userTable");
+
+				if(!table){
+					layer.msg('Please Login', {
+						time: 2000,
+						icon: 5
+					}, function() {
+						window.parent.location.href = '../login/login.html';
+					});
+				}
+
+
+				http.request(`${table}/session`, 'get', {}, function(data) {
+					// 
+					form.val("myForm", data.data);																																																							// 
+					jquery("#profilephotoImg").attr("src", data.data.profilephoto);
+																								});
+
+				// 
+				form.on('submit(*)', function(data) {
+					data = data.field;
+						if(!data.ordinaryusername){
+						layer.msg('User Name should not be empty', {
+														time: 2000,
+														icon: 5
+												});
+						return false
+					}																			                     if(!data.password){
+						layer.msg('Password should not be empty', {
+														time: 2000,
+														icon: 5
+												});
+						return false
+					}																								if(!data.name){
+						layer.msg('Name should not be empty', {
+														time: 2000,
+														icon: 5
+												});
+						return false
+					}																																																																																																																																											if(!isEmail(data.email)){
+						layer.msg('Email format should be correct', {
+														time: 2000,
+														icon: 5
+												});
+						return false
+					}
+						http.requestJson(table + '/update', 'post', data, function(res) {
+						layer.msg('Modified successfully', {
+							time: 2000,
+							icon: 6
+						}, function() {
+							window.location.reload();
+						});
+					});
+					return false
+				});
+
+			});
+		</script>
+	</body>
+</html>

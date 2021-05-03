@@ -1,0 +1,293 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>Album</title>
+		<link rel="stylesheet" href="../../layui/css/layui.css">
+		
+		<link rel="stylesheet" href="../../css/style.css" />
+		
+		<link rel="stylesheet" href="../../css/theme.css" />
+		
+		<link rel="stylesheet" href="../../css/common.css" />
+	</head>
+	<style>
+		html::after {
+			position: fixed;
+			top: 0;
+			right: 0;
+			left: 0;
+			bottom: 0;
+			content: '';
+			display: block;
+			background-attachment: fixed;
+			background-size: cover;
+			background-position: center;
+						z-index: -1;
+		}
+		#swiper {
+			overflow: hidden;
+		}
+		#swiper .layui-carousel-ind li {
+			width: 16px;
+			height: 10px;
+			border-width: 0;
+			border-style: solid;
+			border-color: rgba(0,0,0,.3);
+			border-radius: 3px;
+			background-color: #f7f7f7;
+			box-shadow: 0 0 6px rgba(255,0,0,.8);
+		}
+		#swiper .layui-carousel-ind li.layui-this {
+			width: 24px;
+			height: 10px;
+			border-width: 0;
+			border-style: solid;
+			border-color: rgba(0,0,0,.3);
+			border-radius: 0;
+			background-color: red;
+			box-shadow: 0 0 6px rgba(255,0,0,.8);
+		}
+
+		input#buynumber::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; }
+		input#buynumber[type="number"]{ -moz-appearance: textfield; }
+
+		.message-container {width: 100%}
+
+		.detail-tab .layui-tab-card>.layui-tab-title .layui-this {
+			background-color: rgba(38, 155, 158, 1);
+			color: #fff;
+			font-size: 14px;
+		}
+
+    .data-detail {
+      padding-bottom: 20px;
+    }
+    
+    .data-detail .layui-breadcrumb a.first {
+      color: rgba(0, 112, 126, 1) !important;
+    }
+	</style>
+	<body>
+
+		<div id="app">
+
+			<div class="data-detail">
+				<div class="data-detail-breadcrumb" :style='{"padding":"0 10px","boxShadow":"6px 8px 6px rgba(0, 112, 126, 1)","margin":"20px auto","borderColor":"rgba(0, 112, 126, 1)","backgroundColor":"#fff","borderRadius":"4px","borderWidth":"1px","borderStyle":"solid","height":"54px"}'>
+				<span class="layui-breadcrumb">
+				<a class="first" :style='{"padding":"8px 10px","boxShadow":"0 0 6px rgba(255,0,0,0)","margin":"0 5px","borderColor":"rgba(255,0,0,.3)","backgroundColor":"#fff","color":"rgba(0, 112, 126, 1)","borderRadius":"0","borderWidth":"0","fontSize":"16px","borderStyle":"solid"}' href="../home/home.html">Album</a>
+				<a><cite :style='{"padding":"8px 15px","boxShadow":"0 0 6px rgba(0, 112, 126, 1)","margin":"0 15px","borderColor":"rgba(0, 112, 126, 1)","backgroundColor":"#fff","color":"rgba(0, 112, 126, 1)","borderRadius":"4px","borderWidth":"0","fontSize":"16px","borderStyle":"solid"}'>{{title}}</cite></a>
+				</span>
+					
+				<a :style='{"padding":"0 12px","boxShadow":"0 0 6px rgba(255,0,0,.3)","borderColor":"rgba(255,0,0,.3)","backgroundColor":"#fff","color":"red","borderRadius":"4px","borderWidth":"0","fontSize":"16px","lineHeight":"34px","borderStyle":"solid"}' @click="storeUp()" href="javascript:void(0)">
+				<i class="layui-icon" style="font-size: 20px;color: red;" v-if='true' :style='{"color":"red","padding":"0 2px 0 0","fontSize":"18px"}'>&#xe67a;</i>Favorite
+				</a>
+                    					
+				</div>
+				<div class="layui-row" style="display: flex">
+					<div class="layui-col-md5" style="width:400px">
+						<!-- <div class="layui-carousel" id="swiper">
+							<div carousel-item id="swiper-item">
+								<div v-for="(item,index) in swiperList" v-bind:key="index">
+									<img class="swiper-item" :src="item.img">
+								</div>
+							</div>
+						</div> -->
+						<div class="layui-carousel" id="swiper" :style='{"boxShadow":"0 0 6px rgba(51, 140, 145, 1)","margin":"0 auto","borderColor":"rgba(0,0,0,.3)","borderRadius":"4px","borderWidth":"0","width":"400px","borderStyle":"solid","height":"400px"}'>
+						  <div carousel-item>
+							<div v-if="swiperList.length" v-for="(item,index) in swiperList" :key="index">
+								<img style="width: 100%;height: 100%;object-fit:cover;" :src="item" />
+							</div>
+						  </div>
+						</div>
+
+						
+                                                
+					</div>
+					<div class="layui-col-md7" style="padding-left: 20px;flex: 1;" :style='{"padding":"0","boxShadow":"0 0 6px rgba(51, 140, 145, 1)","margin":"0 0 0 20px","borderColor":"rgba(194, 211, 211, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"1px","borderStyle":"solid"}'>
+						<h1 style="position: relative;" :style='{"padding":"10px 15px","boxShadow":"0 0 0px rgba(51, 140, 145, 1)","borderColor":"rgba(255, 255, 255, 0.3)","backgroundColor":"rgba(38, 155, 158, 1)","color":"rgba(255, 255, 255, 1)","borderRadius":"0","textAlign":"left","borderWidth":"0","fontSize":"20px","borderStyle":"solid"}' class="title">{{title}}</h1>																							<div :style='{"padding":"6px 15px","boxShadow":"0 0  0px rgba(51, 140, 145, 1)","margin":"0","borderColor":"rgba(242, 240, 240, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"1px","borderStyle":"solid"}' class="detail-item">
+							<span :style='{"padding":"0 12px 0 0","minWidth":"94px","fontSize":"14px","color":"#333","textAlign":"left"}'>Club Account：</span>
+							<span :style='{"padding":"5px 15px","boxShadow":"0 0 0px rgba(255,0,0,.3)","borderColor":"rgba(0,0,0,.3)","backgroundColor":"#fff","color":"#333","borderRadius":"4px","textAlign":"left","borderWidth":"0","width":"auto","lineHeight":"auto","fontSize":"14px","borderStyle":"solid"}' class="desc">
+								{{detail.clubaccount}}
+							</span>
+						</div>
+							<div :style='{"padding":"6px 15px","boxShadow":"0 0  0px rgba(51, 140, 145, 1)","margin":"0","borderColor":"rgba(242, 240, 240, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"1px","borderStyle":"solid"}' class="detail-item">
+							<span :style='{"padding":"0 12px 0 0","minWidth":"94px","fontSize":"14px","color":"#333","textAlign":"left"}'>Club Name：</span>
+							<span :style='{"padding":"5px 15px","boxShadow":"0 0 0px rgba(255,0,0,.3)","borderColor":"rgba(0,0,0,.3)","backgroundColor":"#fff","color":"#333","borderRadius":"4px","textAlign":"left","borderWidth":"0","width":"auto","lineHeight":"auto","fontSize":"14px","borderStyle":"solid"}' class="desc">
+								{{detail.clubname}}
+							</span>
+						</div>
+							<div :style='{"padding":"6px 15px","boxShadow":"0 0  0px rgba(51, 140, 145, 1)","margin":"0","borderColor":"rgba(242, 240, 240, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"1px","borderStyle":"solid"}' class="detail-item">
+							<span :style='{"padding":"0 12px 0 0","minWidth":"94px","fontSize":"14px","color":"#333","textAlign":"left"}'>Club Type：</span>
+							<span :style='{"padding":"5px 15px","boxShadow":"0 0 0px rgba(255,0,0,.3)","borderColor":"rgba(0,0,0,.3)","backgroundColor":"#fff","color":"#333","borderRadius":"4px","textAlign":"left","borderWidth":"0","width":"auto","lineHeight":"auto","fontSize":"14px","borderStyle":"solid"}' class="desc">
+								{{detail.clubtype}}
+							</span>
+						</div>																						 <div :style='{"padding":"6px 15px","boxShadow":"0 0  0px rgba(51, 140, 145, 1)","margin":"0","borderColor":"rgba(242, 240, 240, 1)","backgroundColor":"#fff","borderRadius":"0","borderWidth":"1px","borderStyle":"solid"}' class="detail-item">
+							<span :style='{"padding":"0 12px 0 0","minWidth":"94px","fontSize":"14px","color":"#333","textAlign":"left"}'>Release Date：</span>
+							<span :style='{"padding":"5px 15px","boxShadow":"0 0 0px rgba(255,0,0,.3)","borderColor":"rgba(0,0,0,.3)","backgroundColor":"#fff","color":"#333","borderRadius":"4px","textAlign":"left","borderWidth":"0","width":"auto","lineHeight":"auto","fontSize":"14px","borderStyle":"solid"}' class="desc">
+								{{detail.albumaddtime}}
+							</span>
+						</div>
+																		
+
+						
+																																																																																																
+
+						</div>
+				</div>
+
+				
+																																																																
+
+				<div class="layui-row detail-tab">
+				<div class="layui-tab layui-tab-card" :style='{"boxShadow":"0 0 0px rgba(255,0,0,.3)","borderColor":"rgba(38, 155, 158, 1)","backgroundColor":"#fff","borderRadius":"10px","borderStyle":"solid","borderWidth":"1px"}' style="overflow: hidden;">
+
+				<ul class="layui-tab-title" :style='{"color":"rgba(38, 155, 158, 1)","backgroundColor":"#f2f2f2","fontSize":"14px"}'>												  <li class="layui-this">Album Information</li>
+																																										
+
+				</ul>
+
+				<div class="layui-tab-content">																																											 <div class="layui-tab-item layui-show">
+						<div v-html="detail.albumcontent"></div>
+				</div>
+																																										
+
+							
+														
+
+							
+														
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+
+		<script src="../../layui/layui.js"></script>
+		<script src="../../js/vue.js"></script>
+		
+		<script src="../../js/config.js"></script>
+		
+		<script src="../../modules/config.js"></script>
+		
+		<script src="../../js/utils.js"></script>
+
+		<script>
+			var vue = new Vue({
+				el: '#app',
+				data: {
+					
+					swiperList: [],
+					
+					detail: {
+						id: 0
+					},
+					
+					title: '',
+					
+					count: 0,
+					
+					buynumber: 1,
+					
+					detailTable: 'Album',
+					
+					dataList: [],
+					
+					numberList: []
+				},
+				
+
+				
+				destroyed: function() {
+					window.clearInterval(this.inter);
+				},
+				methods: {
+					jump(url) {
+						jump(url)
+					},
+					isAuth(tablename, button) {
+						return isFrontAuth(tablename, button)
+					},
+					
+
+					
+					
+					onAcrossTap(acrossTable){
+						localStorage.setItem('crossTable',`Album`);
+						localStorage.setItem('crossObj', JSON.stringify(this.detail));
+						jump(`../${acrossTable}/add.html?corss=true`);
+					},
+
+					
+					
+					
+					                    
+					storeUp() {
+						layui.http.requestJson('storeup/save', 'post', {
+							userid: localStorage.getItem('userid'),
+							name: this.title,
+							picture: this.swiperList[0],
+							refid: this.detail.id,
+							tablename: this.detailTable
+						}, function(res) {
+							layer.msg(`Got it!`, {
+								time: 2000,
+								icon: 6
+							});
+						});
+					},
+                    
+					
+				}
+			})
+
+			layui.use(['layer', 'form', 'element', 'carousel', 'http', 'jquery', 'laypage'], function() {
+				var layer = layui.layer;
+				var element = layui.element;
+				var form = layui.form;
+				var carousel = layui.carousel;
+				var http = layui.http;
+				var jquery = layui.jquery;
+				var laypage = layui.laypage;
+
+				var limit = 10;
+
+				
+				var id = http.getParam('id');
+				vue.detail.id = id;
+
+				
+				http.request(`${vue.detailTable}/detail/` + id, 'get', {}, function(res) {
+					
+					vue.detail = res.data
+					vue.title = vue.detail.albumtitle;																																																		// 
+					vue.swiperList = vue.detail.coverphoto ? vue.detail.coverphoto.split(",") : [];																																			
+					vue.$nextTick(() => {
+					  carousel.render({
+					  	elem: '#swiper',
+						width: '400px',
+					  	height: '400px',
+					  	arrow: 'hover',
+					  	anim: 'default',
+					  	autoplay: 'true',
+					  	interval: '3000',
+					  	indicator: 'inside'
+					  });
+
+					})
+
+
+					
+					
+				});
+
+				
+			});
+		</script>
+	</body>
+</html>
